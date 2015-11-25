@@ -2,21 +2,16 @@
 
 const express = require('express');
 const router = express.Router();
-const Article = require('../models/article');
+const addArticleAction = require('../actions/article/addArticle');
 
-router.get('/', (req, res, next) => {
-    Article
-        .build({
-            title: 'test',
-            content: 'hahaha',
-            tag: 'node,sequelize,mysql'
-        })
-        .save()
-        .then(anotherTask => {
-            console.log(anotherTask);
-            res.send('save succeed!');
-        }).catch(err => {
-            console.log(err);
+router.get('/add', (req, res, next) => {
+    let content = req.query.content;
+    addArticleAction(content)
+        .then(ret => {
+            console.log(ret); 
+        },
+        err => {
+            throw err;
         });
 });
 
