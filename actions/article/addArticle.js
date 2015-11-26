@@ -5,14 +5,15 @@ const getTitleAndAbs = require('../../util/util.js').getTitleAndAbs;
 
 function addArticleAction(raw) {
     return new Promise((resolve, reject) => {
-       let analyzed = getTitleAndAbs(raw);
-       let title = analyzed.title;
-       let abs = analyzed.abs;
+        let analyzed = getTitleAndAbs(raw);
+        let title = analyzed.title;
+        let abs = analyzed.abs;
 
-       Article
+        Article
             .build({
                 title: title,
-                content: content
+                summary: abs, 
+                content: raw
             })
             .save()
             .then(anoterTask => {

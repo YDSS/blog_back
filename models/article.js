@@ -8,9 +8,10 @@ let Article = sequelize.define('Article', {
     id: { type: Sequelize.INTEGER, primaryKey: true },
     title: { type: Sequelize.STRING, allowNull: false, unique: true },
     content: { type: Sequelize.STRING },
+    summary: { type: Sequelize.STRING }, 
     tag: { type: Sequelize.STRING },
-    create_at: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },
-    update_at: { type: Sequelize.DATE, defaultValue: Sequelize.NOW }
+    created_at: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },
+    updated_at: { type: Sequelize.DATE, defaultValue: Sequelize.NOW }
 }, {
     timestamps: false,
     tableName: 'article'
