@@ -4,17 +4,17 @@ const Sequelize = require('sequelize');
 // database object that has connected
 const sequelize = require('../db/connectMysql');
 
-let Article = sequelize.define('Article', {
-    id: { type: Sequelize.INTEGER, primaryKey: true },
-    title: { type: Sequelize.STRING, allowNull: false, unique: true },
-    content: { type: Sequelize.STRING },
-    summary: { type: Sequelize.STRING }, 
-    tag: { type: Sequelize.STRING },
-    created_at: { type: Sequelize.DATE, defaultValue: Sequelize.NOW },
-    updated_at: { type: Sequelize.DATE, defaultValue: Sequelize.NOW }
-}, {
-    timestamps: false,
-    tableName: 'article'
-});
-
-module.exports = Article;
+module.exports = (sequelize, Datatype) => { 
+    return sequelize.define('Article', {
+        id: { type: Datatype.INTEGER, primaryKey: true, autoIncrement: true },
+        title: { type: Datatype.STRING, allowNull: false, unique: true },
+        content: { type: Datatype.STRING, allowNull: false },
+        summary: { type: Datatype.STRING }, 
+        tag: { type: Datatype.STRING },
+        created_at: { type: Datatype.DATE, allowNull: false },
+        updated_at: { type: Datatype.DATE, allowNull: false, defaultValue: Datatype.NOW }
+    }, {
+        timestamps: false,
+        tableName: 'article'
+    });
+}

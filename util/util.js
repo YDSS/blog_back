@@ -3,7 +3,7 @@
 // matching rules:
 // any charactor follows '#' until '\n'  will be title
 // charactor between first '\n' and the second is abstract
-const re = /^#\s?([^\n]+)\n([^\n]*)/;
+const re = /^#\s?([^\n]+)(?:\n([^\n]*))?/;
 
 exports.getTitleAndAbs = content => {
     if (!content || typeof content !== 'string') {
