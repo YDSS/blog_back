@@ -10,7 +10,7 @@ module.exports = (sequelize, Datatype) => {
         title: { type: Datatype.STRING, allowNull: false, unique: true },
         content: { type: Datatype.STRING, allowNull: false },
         summary: { type: Datatype.STRING }, 
-        tag: { type: Datatype.STRING },
+        tags: { type: Datatype.STRING },
         created_at: { type: Datatype.DATE, allowNull: false },
         updated_at: { type: Datatype.DATE, allowNull: false, defaultValue: Datatype.NOW }
     }, {

@@ -4,6 +4,48 @@ const sequelize = require('../db/connectMysql');
 const Article = sequelize.import('../models/article');
 const getTitleAndAbs = require('../util/util.js').getTitleAndAbs;
 
+exports.findArticle = function (data) {
+    return  new Promise((resolve, reject) => {
+        let promise;
+        let queryItem = [
+            'id',
+            'title',
+            'summary',
+            'tags',
+            'created_at'
+        ];
+
+        // 查询条件视请求参数的组合决定
+        // 有id则以id为查询条件，
+        // 若无id则查看是否存在tags，
+        // 若id和tags皆无，则取全部
+        if (data.id) {
+            promise = Article.findOne({
+                where: {
+                    id: data.id
+                },
+                attributes: queryItem
+            });
+        }
+        else if (data.tags) {
+            
+        }
+        else {
+            promise = Article.findAll({
+                attributes: queryItem 
+            });
+        }
+
+        promise
+            .then(article => {
+                resolve(article);
+            })
+            .catch(err => {
+                reject(err);
+            });
+    });
+}
+
 exports.addArticle = function (raw) {
     return new Promise((resolve, reject) => {
         let analyzed = getTitleAndAbs(raw);

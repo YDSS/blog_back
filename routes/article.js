@@ -5,6 +5,26 @@ const router = express.Router();
 const articleAction = require('../actions/article');
 const responseState = require('../constant/state_code');
 
+router.get('/find', (req, res, next) => {
+    const findArticle = articleAction.findArticle;
+
+    findArticle({
+        id: req.query.id || '',
+        tags: req.query.tags || ''
+    })
+        .then(ret => {
+            res.send({
+                errno: responseState.OK,
+                data: ret
+            });
+        }, err => {
+            res.send({
+                errno: responseState.SQL_ERROR,
+                data: err
+            });
+        });
+});
+
 router.get('/add', (req, res, next) => {
     const addArticle = articleAction.addArticle;
     let content = req.query.content;
