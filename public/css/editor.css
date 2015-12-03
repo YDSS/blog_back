@@ -1,0 +1,65 @@
+.editor {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box; }
+  .editor textarea {
+    width: 100%;
+    min-height: 600px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    overflow-x: scroll;
+    overflow-y: visible;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px; }
+  .editor pre {
+    overflow-x: auto;
+    padding: 20px;
+    background: url(/img/bg-code.png) top center #fdf6e3;
+    color: #657b83;
+    -webkit-text-size-adjust: none;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px; }
+  .editor .btns {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex; }
+  .editor .btn {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -moz-box-flex: 1;
+    -moz-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    height: 32px;
+    padding: 0 25.6px;
+    margin-top: 10px;
+    margin-right: 20px;
+    font: 300 16px/30px normal;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 50px;
+    background: #00a1cb;
+    cursor: pointer;
+    color: #fff;
+    vertical-align: middle;
+    -webkit-transition: compact(compact(background 0.3s linear, false, false, false, false, false, false, false, false, false) false false);
+    -moz-transition: compact(compact(background 0.3s linear, false, false, false, false, false, false, false, false, false) false false false);
+    -o-transition: compact(compact(background 0.3s linear, false, false, false, false, false, false, false, false, false) false false false);
+    transition: compact(background 0.3s linear, false, false, false, false, false, false, false, false, false); }
+    .editor .btn:hover {
+      background: #00b5e5; }
+    .editor .btn:active {
+      background: #1495b7; }
+    .editor .btn:last-child {
+      margin-right: 0; }

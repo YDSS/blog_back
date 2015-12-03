@@ -10,10 +10,15 @@ exports.getTitleAndAbs = content => {
         return;
     }
 
-    let ret = content.match(re);
-
-    return {
-        title: ret[1],
-        abs: ret[2] || ''
+    let matches = content.match(re);
+    let result;
+    
+    if (matches && matches.length > 1) {
+        result = {
+            title: ret[1],
+            abs: ret[2] || ''
+        };
     }
+    
+    return result;
 }

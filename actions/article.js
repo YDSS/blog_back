@@ -49,6 +49,12 @@ exports.findArticle = function (data) {
 exports.addArticle = function (raw) {
     return new Promise((resolve, reject) => {
         let analyzed = getTitleAndAbs(raw);
+        // 如果没有标题或者标题格式不对，直接返回
+        if (!analyzed) {
+            reject('wrong format of title or summary...');
+            return;
+        }
+
         let title = analyzed.title;
         let abs = analyzed.abs;
 

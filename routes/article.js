@@ -39,7 +39,7 @@ router.get('/add', (req, res, next) => {
         err => {
             res.send({
                 errno: responseState.SQL_ERROR,
-                errInfo: err
+                data: err
             });
             throw err;
         });
