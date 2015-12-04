@@ -4,6 +4,8 @@ const sequelize = require('../db/connectMysql');
 const Article = sequelize.import('../models/article');
 const getTitleAndAbs = require('../util/util.js').getTitleAndAbs;
 
+const pageSize = 10;
+
 exports.findArticle = function (data) {
     return  new Promise((resolve, reject) => {
         let promise;
@@ -12,6 +14,7 @@ exports.findArticle = function (data) {
             'title',
             'summary',
             'tags',
+            'content',
             'created_at'
         ];
 
@@ -32,7 +35,9 @@ exports.findArticle = function (data) {
         }
         else {
             promise = Article.findAll({
-                attributes: queryItem 
+                attributes: queryItem,
+                order: 'created_at DESC',
+                limit: pageSize
             });
         }
 

@@ -15,8 +15,8 @@ exports.getTitleAndAbs = content => {
     
     if (matches && matches.length > 1) {
         result = {
-            title: ret[1],
-            abs: ret[2] || ''
+            title: matches[1],
+            abs: matches[2] || ''
         };
     }
     
