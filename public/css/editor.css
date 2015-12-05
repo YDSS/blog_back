@@ -17,17 +17,6 @@
     -ms-border-radius: 5px;
     -o-border-radius: 5px;
     border-radius: 5px; }
-  .editor pre {
-    overflow-x: auto;
-    padding: 20px;
-    background: url(/img/bg-code.png) top center #fdf6e3;
-    color: #657b83;
-    -webkit-text-size-adjust: none;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    -ms-border-radius: 5px;
-    -o-border-radius: 5px;
-    border-radius: 5px; }
   .editor .btns {
     display: -webkit-box;
     display: -webkit-flex;

@@ -14,8 +14,9 @@ exports.findArticle = function (data) {
             'title',
             'summary',
             'tags',
-            'content',
-            'created_at'
+            'raw',
+            'createdAt',
+            'updatedAt'
         ];
 
         // 查询条件视请求参数的组合决定
@@ -36,7 +37,7 @@ exports.findArticle = function (data) {
         else {
             promise = Article.findAll({
                 attributes: queryItem,
-                order: 'created_at DESC',
+                order: 'createdAt DESC',
                 limit: pageSize
             });
         }
@@ -67,8 +68,8 @@ exports.addArticle = function (raw) {
             .build({
                 title: title,
                 summary: abs, 
-                content: raw,
-                created_at: new Date().getTime()
+                raw: raw,
+                createdAt: new Date()
             })
             .save()
             .then(anoterTask => {
@@ -85,7 +86,6 @@ exports.updateArticle = function (data) {
         let analyzed = getTitleAndAbs(data.content);
         let title = analyzed.title;
         let abs = analyzed.abs;
-        debugger
 
         Article
             .findOne({
@@ -94,16 +94,15 @@ exports.updateArticle = function (data) {
                 }
             })
             .then(article => {
-                debugger
                 let ret = article.update({
                     title: title,
-                    content: data.content,
-                    summary: abs
+                    raw: data.raw,
+                    summary: abs,
+                    updatedAt: new Date()
                 });
                 resolve(ret);
             })
             .catch(err => {
-                debugger
                 reject(err);
             });
     });

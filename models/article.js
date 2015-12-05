@@ -8,11 +8,11 @@ module.exports = (sequelize, Datatype) => {
     return sequelize.define('Article', {
         id: { type: Datatype.INTEGER, primaryKey: true, autoIncrement: true },
         title: { type: Datatype.STRING, allowNull: false, unique: true },
-        content: { type: Datatype.STRING, allowNull: false },
+        raw: { type: Datatype.TEXT, allowNull: false },
         summary: { type: Datatype.STRING }, 
         tags: { type: Datatype.STRING },
-        created_at: { type: Datatype.DATE, allowNull: false },
-        updated_at: { type: Datatype.DATE, allowNull: false, defaultValue: Datatype.NOW }
+        createdAt: { type: Datatype.DATE, allowNull: false },
+        updatedAt: { type: Datatype.DATE, allowNull: false, defaultValue: new Date() }
     }, {
         timestamps: false,
         tableName: 'article'
