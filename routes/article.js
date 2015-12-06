@@ -8,10 +8,7 @@ const responseState = require('../constant/state_code');
 router.get('/find', (req, res, next) => {
     const findArticle = articleAction.findArticle;
 
-    findArticle({
-        id: req.query.id || '',
-        tags: req.query.tags || ''
-    })
+    findArticle(req.query)
         .then(ret => {
             res.send({
                 errno: responseState.OK,
@@ -20,7 +17,7 @@ router.get('/find', (req, res, next) => {
         }, err => {
             res.send({
                 errno: responseState.SQL_ERROR,
-                data: err
+                data: err.message
             });
         });
 });
@@ -61,7 +58,7 @@ router.get('/update', (req, res, next) => {
         }, err => {
             res.send({
                 errno: responseState.SQL_ERROR,
-                data: err
+                data: err.message
             });
         });
 });
@@ -79,7 +76,7 @@ router.get('/del', (req, res, next) => {
         }, err => {
             res.send({
                 errno: responseState.SQL_ERROR,
-                data: err
+                data: err.message
             });
         });
 });

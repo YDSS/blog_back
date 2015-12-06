@@ -12,7 +12,7 @@ module.exports = (sequelize, Datatype) => {
         summary: { type: Datatype.STRING }, 
         tags: { type: Datatype.STRING },
         createdAt: { type: Datatype.DATE, allowNull: false },
-        updatedAt: { type: Datatype.DATE, allowNull: false, defaultValue: new Date() }
+        updatedAt: { type: Datatype.DATE, allowNull: false, defaultValue: Datatype.NOW }
     }, {
         timestamps: false,
         tableName: 'article'
