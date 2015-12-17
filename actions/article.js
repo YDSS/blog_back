@@ -57,17 +57,17 @@ function findArticleByPage(data) {
              *      [...list],
              *      [{
              *          dataValues: {
-             *              pageSum: 20
+             *              articleSum: 20
              *          }
              *      }]
              *  ]
              */
             // TODO sequelize返回的对象里东西太多，查查api有没简化的方法
-            let pageSum = res[1][0].dataValues.pageSum;
+            let articleSum = res[1][0].dataValues.articleSum;
 
             return {
                 list,
-                pageSum
+                articleSum
             };
         });
 }
@@ -77,7 +77,8 @@ function getArticlesByPage(data) {
         attributes: data.queryItem,
         order: 'createdAt DESC',
         limit: data.pageSize,
-        offset: data.curPage * data.pageSize
+        // 前端页码从1开始计数
+        offset: (data.curPage - 1) * data.pageSize
     })
 }
 
@@ -86,8 +87,8 @@ function getArticleSum() {
         attributes: [[
             // 聚合id，得到文章总数
             sequelize.fn('COUNT', sequelize.col('id')),
-            // 重命名为pageSum
-            'pageSum'
+            // 重命名为articleSum
+            'articleSum'
         ]]
     });
 }
