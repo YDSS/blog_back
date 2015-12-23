@@ -1,7 +1,7 @@
 {
   "name": "blog",
   "version": "1.0.0",
-  "main": "main.js",
+  "main": "register.js",
   "scripts": {
     "start": "node-dev ./bin/www"
   },
@@ -15,5 +15,8 @@
     "mysql": "^2.9.0",
     "sequelize": "^3.14.1",
     "serve-favicon": "~2.2.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.3.21"
   }
 }
