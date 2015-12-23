@@ -1,5 +1,3 @@
-'use strict'
-
 const Sequelize = require('sequelize');
 
 let dbConfig = require('./conf').db;

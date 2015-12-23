@@ -1,5 +1,3 @@
-'use strict'
-
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -11,13 +9,14 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var article = require('./routes/article');
 
-const sequelize = require('./db/connectMysql');
-
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+// 工作环境
+app.set('env', 'production');
 
 // uncomment after placing your favicon in /public
 app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -62,5 +61,6 @@ app.use(function(err, req, res, next) {
   });
 });
 
+const sequelize = require('./db/connectMysql');
 
 module.exports = app;
