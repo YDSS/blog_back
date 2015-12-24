@@ -1,9 +1,3 @@
-'use strict'
-
-const Sequelize = require('sequelize');
-// database object that has connected
-const sequelize = require('../db/connectMysql');
-
 module.exports = (sequelize, Datatype) => { 
     return sequelize.define('Article', {
         id: { type: Datatype.INTEGER, primaryKey: true, autoIncrement: true },

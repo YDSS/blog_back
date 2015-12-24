@@ -1,15 +1,17 @@
-const Sequelize = require('sequelize');
+// const Sequelize = require('sequelize');
+import Sequelize from 'sequelize';
+import conf from './conf';
 
-let dbConfig = require('./conf').db;
 let sequelize = new Sequelize(
-    dbConfig.database,
-    dbConfig.user,
-    dbConfig.passwd,
+    conf.database,
+    conf.user,
+    conf.passwd,
     {
-        host: dbConfig.host,
-        dialect: dbConfig.dialect,
-        pool: dbConfig.pool
+        host: conf.host,
+        port: conf.port,
+        dialect: conf.dialect,
+        pool: conf.pool
     }
 );
 
-module.exports = sequelize;
+export default sequelize;

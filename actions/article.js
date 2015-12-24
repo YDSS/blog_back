@@ -1,8 +1,7 @@
-'use strict'
+import sequelize from '../db/connectMysql';
 
-const sequelize = require('../db/connectMysql');
-const Article = sequelize.import('../models/article');
 const getTitleAndAbs = require('../util/util.js').getTitleAndAbs;
+let Article = sequelize.import('../models/article');
 
 exports.findArticle = function (data) {
     return  new Promise((resolve, reject) => {
@@ -24,13 +23,13 @@ exports.findArticle = function (data) {
                 promise = findArticleByPage(data);
                 break;
             case 'id':
-                promise = findArticleById(data); 
+                promise = findArticleById(data);
                 break;
             case 'tags':
                 promise = findArticleByTags(data);
                 break;
             default:
-                return null;    
+                return null;
         }
 
         promise
@@ -51,7 +50,7 @@ function findArticleByPage(data) {
     ])
         .then(res => {
             let list = res[0];
-            /** 
+            /**
              * getArticleSum返回的是一个数组，其数据结构如下：
              *  res: [
              *      [...list],
@@ -121,7 +120,7 @@ exports.addArticle = function (raw) {
         Article
             .build({
                 title: title,
-                summary: abs, 
+                summary: abs,
                 raw: raw,
                 createdAt: new Date()
             })
@@ -171,7 +170,7 @@ exports.delArticle = function (id) {
                 }
             })
             .then(article => {
-                let ret = article.destroy();      
+                let ret = article.destroy();
                 resolve(ret);
             })
             .catch(err => {

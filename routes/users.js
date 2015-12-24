@@ -1,17 +1,9 @@
-'use strict'
+import express from 'express';
+import sequelize from '../db/connectMysql';
 
-let express = require('express');
 let router = express.Router();
 
-const Sequelize = require('sequelize');
-const sequelize = require('../db/connectMysql');
-let User = sequelize.define('user', {
-    id: { type: Sequelize.INTEGER, primaryKey: true },
-    name: Sequelize.STRING,
-    pass: Sequelize.STRING
-}, {
-    tableName: 'user'
-});
+let User = sequelize.import('../models/user');
 
 /* GET users listing. */
 router.get('/', (req, res, next) => {
@@ -23,4 +15,4 @@ router.get('/', (req, res, next) => {
         });
 });
 
-module.exports = router;
+export { router as users };

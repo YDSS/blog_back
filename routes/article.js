@@ -1,6 +1,5 @@
-'use strict'
+import express from 'express';
 
-const express = require('express');
 const router = express.Router();
 const articleAction = require('../actions/article');
 const responseState = require('../constant/state_code');
@@ -66,7 +65,7 @@ router.get('/update', (req, res, next) => {
 router.get('/del', (req, res, next) => {
     const delArticle = articleAction.delArticle;
     let articleId = req.query.id;
-    
+
     delArticle(articleId)
         .then(ret => {
             res.send({
@@ -81,4 +80,4 @@ router.get('/del', (req, res, next) => {
         });
 });
 
-module.exports = router;
+export {router as article};

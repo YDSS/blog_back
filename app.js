@@ -1,3 +1,6 @@
+import {users} from './routes/users';
+import {article} from './routes/article';
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -6,8 +9,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
-var article = require('./routes/article');
 
 var app = express();
 
@@ -60,7 +61,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
-const sequelize = require('./db/connectMysql');
 
 module.exports = app;
