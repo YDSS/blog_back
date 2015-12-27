@@ -1,3 +1,6 @@
+/* global global, __dirname */
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
 import {users} from './routes/users';
 import {article} from './routes/article';
 
@@ -5,7 +8,6 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
@@ -26,6 +28,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// ace 缓存服务sdk
+let AceSessionStore = global.MemcachedStore(session);
+
+app.use(session({
+    key: 'BLOG_SID',
+    store: new AceSessionStore({
+        prefix: 'sess',
+        expires: 365 * 60 * 60 * 60
+    }),
+    secret: 'blog'
+}));
 
 app.use('/', routes);
 app.use('/users', users);
