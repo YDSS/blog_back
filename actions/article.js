@@ -34,7 +34,6 @@ exports.findArticle = function (data) {
 
         promise
             .then(res => {
-                debugger;
                 resolve(res);
             })
             .catch(err => {
