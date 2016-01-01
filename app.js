@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import {users} from './routes/users';
 import {article} from './routes/article';
+import {file} from './routes/file';
 
 var express = require('express');
 var path = require('path');
@@ -27,23 +28,25 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'test')));
 
 // ace 缓存服务sdk
-let AceSessionStore = global.MemcachedStore(session);
+// let AceSessionStore = global.MemcachedStore(session);
 
-app.use(session({
-    key: 'BLOG_SID',
-    store: new AceSessionStore({
-        prefix: 'sess',
-        expires: 365 * 60 * 60 * 60
-    }),
-    secret: 'blog'
-}));
+// app.use(session({
+//     key: 'BLOG_SID',
+//     store: new AceSessionStore({
+//         prefix: 'sess',
+//         expires: 365 * 60 * 60 * 60
+//     }),
+//     secret: 'blog'
+// }));
 
 app.use('/', routes);
 app.use('/users', users);
 app.use('/article', article);
+app.use('/file', file);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
