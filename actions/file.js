@@ -24,7 +24,9 @@ const STORAGE_NAME = 'blog-storage';
 export function upload(file, dir) {
     return new Promise((resolve, reject) => {
         let key = getKey(file.originalname, dir);
+        console.log('key is: ' + key);
         let storage = new global.ACESDK.STORAGE(STORAGE_NAME);
+        console.log(storage);
         
         storage.putObject({
             Key: key,
@@ -34,6 +36,7 @@ export function upload(file, dir) {
             Expires: 365
         },
         (err, data) => {
+            console.log(err);
             if (err) {
                 reject(err);
             }
@@ -57,6 +60,7 @@ export function download(filename, dir) {
         // 反斜杠需转义才是真正的key，oss很奇怪
         let key = encodeURIComponent(getKey(filename, dir));
         let storage = new global.ACESDK.STORAGE(STORAGE_NAME);
+        console.log('download key: ' + key + '\n');
         
         storage.getObject({
             Key: key
@@ -66,6 +70,7 @@ export function download(filename, dir) {
                 reject(err);
             } 
             else {
+                console.log(data);
                 resolve({
                     // 文件类型
                     type: data.ContentType,

@@ -14,7 +14,11 @@ let upload = multer();
 router.post('/upload', upload.single('uploadFile'), (req, res) => {
     // multer返回单个文件放在req.file里
     let file = req.file;
-    let dir = req.body.dir;
+    let dir = req.query.dir;
+    console.log('enter upload api');
+    console.log(file);
+
+    console.log(uploadAction);
 
     // fs.writeFile('./test/upload.txt', data.buffer, err => {
     //     if (err) {
@@ -26,10 +30,12 @@ router.post('/upload', upload.single('uploadFile'), (req, res) => {
     // });
     uploadAction.upload(file, dir)
         .then(() => {
+            console.log('then');
             res.send({
                 errno: 0
             });
         }, err => {
+            console.log('err');
             res.send({
                 errno: StatusCode.UPLOAD_ERROR,
                 err: err.message

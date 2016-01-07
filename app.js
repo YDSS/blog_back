@@ -20,7 +20,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // 工作环境
-app.set('env', 'production');
+// app.set('env', 'production');
+app.set('env', 'development');
 
 // uncomment after placing your favicon in /public
 app.use(favicon(__dirname + '/public/favicon.ico'));
