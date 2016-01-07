@@ -11,10 +11,6 @@ import StatusCode from '../constant/state_code';
 let router = express.Router();
 let upload = multer();
 
-router.get('/test', (req, res) => {
-    res.send({a: '123'});
-});
-
 router.post('/upload', upload.single('uploadFile'), (req, res) => {
     // multer返回单个文件放在req.file里
     let file = req.file;
@@ -30,15 +26,9 @@ router.post('/upload', upload.single('uploadFile'), (req, res) => {
     // });
     uploadAction.upload(file, dir)
         .then(() => {
-            // res.writeHead(200, {
-            //     'Content-Type': 'text/plain'
-            // });
             res.send({
                 errno: 0
             });
-            // res.end(JSON.stringify({
-            //     errno: 0
-            // }));
         }, err => {
             res.send({
                 errno: StatusCode.UPLOAD_ERROR,
@@ -53,24 +43,18 @@ router.get('/download', (req, res) => {
      
      uploadAction.download(filename, dir)
         .then(file => {
-            // 先stringify为string，方便计算总字节数
-            let ret = JSON.stringify({
+            // 必须设置Content-Length,process方法的lengthComputable才能正常返回接收值的大小
+            // express send方法可以自动计算Content-Length
+            res.set('Content-Type', 'text/plain');
+            res.send({
                 errno: 0,
                 data: file.toString()
             });
-            // 一定要返回字节数而不是字符数（ret.length）
-            let len = Buffer.byteLength(ret);
-            // 必须设置Content-Length,process方法的lengthComputable才能正常返回接收值的大小
-            res.writeHead(200, {
-                'Content-Type': 'text/plain',
-                'Content-Length': len
-            });
-            res.end(ret);
         }, err => {
-            res.end(JSON.stringify({
+            res.send({
                 errno: StatusCode.UPLOAD_ERROR,
                 err: err.message
-            }));
+            });
         });
      
     //  storage.getObject({
