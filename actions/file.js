@@ -33,7 +33,8 @@ export function upload(file, dir) {
             Body: file.buffer,
             ContentType: file.mimetype,
             ContentEncoding: 'utf-8',
-            Expires: 365
+            // 一年
+            Expires: new Date().getTime() + 365 * 24 * 60 * 60 * 1000
         },
         (err, data) => {
             console.log(err);
@@ -57,8 +58,7 @@ export function upload(file, dir) {
 
 export function download(filename, dir) {
     return new Promise((resolve, reject) => {
-        // 反斜杠需转义才是真正的key，oss很奇怪
-        let key = encodeURIComponent(getKey(filename, dir));
+        let key = getKey(filename, dir);
         let storage = new global.ACESDK.STORAGE(STORAGE_NAME);
         console.log('download key: ' + key + '\n');
         

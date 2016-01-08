@@ -51,10 +51,13 @@ router.get('/download', (req, res) => {
         .then(file => {
             // 必须设置Content-Length,process方法的lengthComputable才能正常返回接收值的大小
             // express send方法可以自动计算Content-Length
-            res.set('Content-Type', 'text/plain');
+            res.set('Content-Type', data.type);
             res.send({
                 errno: 0,
-                data: file.toString()
+                data: {
+                    file: data.body.toString(),
+                    expires: data.expires
+                }
             });
         }, err => {
             res.send({
