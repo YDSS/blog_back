@@ -26,7 +26,8 @@
     "babel-preset-stage-1": "^6.3.13",
     "babel-preset-stage-2": "^6.3.13",
     "babel-preset-stage-3": "^6.3.13",
-    "express-session": "^1.12.1"
+    "express-session": "^1.12.1",
+    "node-jsx": "^0.13.3"
   },
   "aceenv": {
     "NODE_ENV": "production"

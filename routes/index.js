@@ -1,9 +1,19 @@
-var express = require('express');
-var router = express.Router();
+import express from 'express';
+import getNavItems from '../constant/nav_item';
+
+let router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index');
+router.get('/', (req, res, next) => {
+    let auth = req.cookies.auth === 'ydss';
+    let navItems = getNavItems(auth);
+
+    res.render('index', {
+        serverData: JSON.stringify({
+            auth: auth,
+            navItems: navItems
+        })
+    });
 });
 
-module.exports = router;
+export {router as index};

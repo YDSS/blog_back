@@ -1,17 +1,22 @@
 /* global global, __dirname */
+import express from 'express';
+import path from 'path';
+import favicon from 'serve-favicon';
+import logger from 'morgan';
+import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
+
+import {index} from './routes/index';
 import {users} from './routes/users';
 import {article} from './routes/article';
 import {file} from './routes/file';
 
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var bodyParser = require('body-parser');
-
-var routes = require('./routes/index');
+// var express = require('express');
+// var path = require('path');
+// var favicon = require('serve-favicon');
+// var logger = require('morgan');
+// var bodyParser = require('body-parser');
 
 var app = express();
 
@@ -44,7 +49,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //     secret: 'blog'
 // }));
 
-app.use('/', routes);
+app.use('/', index);
 app.use('/users', users);
 app.use('/article', article);
 app.use('/file', file);
