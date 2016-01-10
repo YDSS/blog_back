@@ -12,12 +12,6 @@ import {users} from './routes/users';
 import {article} from './routes/article';
 import {file} from './routes/file';
 
-// var express = require('express');
-// var path = require('path');
-// var favicon = require('serve-favicon');
-// var logger = require('morgan');
-// var bodyParser = require('body-parser');
-
 var app = express();
 
 // view engine setup
@@ -39,20 +33,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // ace 缓存服务sdk
 // let AceSessionStore = global.MemcachedStore(session);
-
+// 
 // app.use(session({
 //     key: 'BLOG_SID',
 //     store: new AceSessionStore({
 //         prefix: 'sess',
-//         expires: 365 * 60 * 60 * 60
+//         expires: 365 * 24 * 60 * 60 * 1000
 //     }),
 //     secret: 'blog'
 // }));
 
 app.use('/', index);
-app.use('/users', users);
-app.use('/article', article);
-app.use('/file', file);
+// 匹配除了/api/*之外的所有链接，指向首页
+app.use(/^((?!\/api\/).)*$/, (req, res) => {
+    res.redirect('/');
+});
+app.use('/api/article', article);
+app.use('/api/file', file);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -14,3 +14,4 @@ var server = http.createServer(app);
 // 阿里云不允许自己绑定端口，listen传空值就可以
 // server.listen();
 server.listen(3000);
+console.log('server start on port: ' + server.address().port);
