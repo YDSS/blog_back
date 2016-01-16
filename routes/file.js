@@ -1,5 +1,5 @@
 /**
- * 文件上传接口，存储在ace oss服务上
+ * 文件上传下载接口，数据流向article表
  * 
  * @author ydss
  */
@@ -14,11 +14,6 @@ let upload = multer();
 router.post('/upload', upload.single('uploadFile'), (req, res) => {
     // multer返回单个文件放在req.file里
     let file = req.file;
-    let dir = req.query.dir;
-    console.log('enter upload api');
-    console.log(file);
-
-    console.log(uploadAction);
 
     // fs.writeFile('./test/upload.txt', data.buffer, err => {
     //     if (err) {
@@ -28,44 +23,44 @@ router.post('/upload', upload.single('uploadFile'), (req, res) => {
     //         res.end('upload success!');
     //     }
     // });
-    uploadAction.upload(file, dir)
-        .then(() => {
-            console.log('then');
+    uploadAction.upload(file)
+        .then(ret => {
             res.send({
-                errno: 0
+                errno: 0,
+                data: ret
             });
         }, err => {
-            console.log('err');
             res.send({
-                errno: StatusCode.UPLOAD_ERROR,
-                err: err.message
+                errno: StatusCode.UPLOAD_FAIL,
+                err: err.message || err
             });
         })
 });
 
-router.get('/download', (req, res) => {
-     let filename = req.query.filename;
-     let dir = req.query.dir;
-     
-     uploadAction.download(filename, dir)
-        .then(file => {
-            // 必须设置Content-Length,process方法的lengthComputable才能正常返回接收值的大小
-            // express send方法可以自动计算Content-Length
-            res.set('Content-Type', data.type);
+router.get('/find', (req, res) => {
+    // diary在数据库里的唯一标识，格式为2015-11-22
+    let dateString = req.query.dateString;
+
+    uploadAction.getDiaryBy(dateString)
+        .then(diary => {
+            res.type('json');
             res.send({
                 errno: 0,
-                data: {
-                    file: data.body.toString(),
-                    expires: data.expires
-                }
+                data: diary
             });
         }, err => {
             res.send({
-                errno: StatusCode.UPLOAD_ERROR,
+                errno: StatusCode.UPLOAD_FAIL,
+                err: err.message
+            });
+        })
+        .catch(err => {
+            res.send({
+                errno: StatusCode.UPLOAD_FAIL,
                 err: err.message
             });
         });
-     
+
     //  storage.getObject({
     //      Key: key
     //  },

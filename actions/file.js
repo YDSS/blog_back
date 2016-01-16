@@ -1,101 +1,111 @@
 /**
- * 文件上传 action
+ * @file 文件上传&&下载接口aciton part
+ * @author ydss
  */
 
+import fs from 'fs';
+import path from 'path';
+import sequelize from '../db/connectMysql';
+
+// diary model
+const Diary = sequelize.import('../models/diary');
+
 /**
- * 文件上传
+ * 上传文件
  * 
  * @param {Object} file 文件信息，multer模块生成
  * @property {string} originalname 文件名
  * @property {string} mimetype 文件类型
  * @property {Buffer} buffer 文件数据
  * 
- * @param {string} dir 目录，因为使用ace oss服务，只能用Key
- *  标识文件，dir起到namespace的作用，Key = dir/originalname
- * 
  * @export
  */
-
-import fs from 'fs';
-import path from 'path';
-
-const STORAGE_NAME = 'blog-storage';
-
-export function upload(file, dir) {
+export function upload(file) {
     return new Promise((resolve, reject) => {
-        let key = getKey(file.originalname, dir);
-        console.log('key is: ' + key);
-        let storage = new global.ACESDK.STORAGE(STORAGE_NAME);
-        console.log(storage);
+        let diaryDate = getDateFrom(file.originalname);
+        console.log('diary date: ' + JSON.stringify(diaryDate));
         
-        storage.putObject({
-            Key: key,
-            Body: file.buffer,
-            ContentType: file.mimetype,
-            ContentEncoding: 'utf-8',
-            // 一年
-            Expires: new Date().getTime() + 365 * 24 * 60 * 60 * 1000
-        },
-        (err, data) => {
-            console.log(err);
-            if (err) {
+        if (diaryDate === null) {
+            reject('format error from filename of diary');
+            return;
+        }
+
+        Diary
+            .build({
+                dateString: diaryDate.dateString,
+                raw: file.buffer.toString(),
+                year: diaryDate.year,
+                month: diaryDate.month,
+                day: diaryDate.day,
+                createdAt: new Date()
+            })
+            .save()
+            .then(ret => {
+                resolve(ret);
+            })
+            .catch(err => {
                 reject(err);
-            }
-            
-            resolve();
-        });
-        // fs.writeFile(path.join(__dirname, '../test/' + file.originalname), file.buffer, err => {
-        //     if (err) {
-        //         reject(err);
-        //         throw err;
-        //     }
-        //     else {
-        //         resolve();
-        //     }
-        // });
+                throw err;
+            });
     });
 }
 
-export function download(filename, dir) {
+/**
+ * 通过日期查询单个日记
+ *
+ * @param {string} dateString diary在表中的唯一标识，格式为2015-11-22
+ * @return {Promise} promise对象
+ */
+export function getDiaryBy(dateString) {
     return new Promise((resolve, reject) => {
-        let key = getKey(filename, dir);
-        let storage = new global.ACESDK.STORAGE(STORAGE_NAME);
-        console.log('download key: ' + key + '\n');
-        
-        storage.getObject({
-            Key: key
-        },
-        (err, data) => {
-            if (err) {
-                reject(err);
-            } 
-            else {
-                console.log(data);
-                resolve({
-                    // 文件类型
-                    type: data.ContentType,
-                    // 过期时间
-                    expires: data.Expires,
-                    // 文件数据，buffer转换成string
-                    body: data.Body.toString()
-                });
+        let re = /^(\d{4})-(\d{1,2})-(\d{1,2})$/;
+        if (!re.test(dateString)) {
+            reject('wrong format of dateString');
+            return;
+        }
+
+        let query = ['id', 'raw', 'dateString', 'createdAt', 'updatedAt'];
+
+        return Diary.findOne({
+            attributes: query,
+            where: {
+                dateString: dateString
             }
-        }); 
-        
-        // let filePath = path.join(__dirname, dir, filename);
-        // 
-        // fs.readFile(filePath, (err, file) => {
-        //     if (err) {
-        //         reject(err);
-        //     }
-        //     else {
-        //         resolve(file);
-        //     }
-        // });
+        })
+            .then(ret => {
+                resolve(ret);
+            }, err => {
+                reject(err);     
+            })
+            .catch(err => {
+                reject(err);
+                throw err;
+            });
     });
 }
 
-// Key = dir/originalname
-function getKey(filename, dir) {
-    return `${dir}/${filename}`;
+/**
+ * 通过文件名解析日记的年月日
+ *  日记的文件名的格式为'YYYY-MM-DD.md'
+ *
+ *  @param {string} filename
+ *  
+ *  @return {Object} 日记的年月日
+ */
+function getDateFrom(filename) {
+    // 抽取文件名中的年月日，顺便校验文件名是否符合规范
+    let re = /^(\d{4})-(\d{1,2})-(\d{1,2})\.md$/;
+    let matches = filename.match(re);
+    let ret = null;
+
+    if (matches) {
+        ret = {
+            year: matches[1],
+            month: matches[2],
+            day: matches[3],
+            dateString: filename.replace(/\.md$/, '')
+        }
+    }
+
+    return ret;
 }

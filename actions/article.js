@@ -4,7 +4,7 @@ const getTitleAndAbs = require('../util/util.js').getTitleAndAbs;
 let Article = sequelize.import('../models/article');
 
 exports.findArticle = function (data) {
-    return  new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         // 操作数据库后sequelize返回的promise对象
         let promise;
         // 取article表中的字段
