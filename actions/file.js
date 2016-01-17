@@ -23,17 +23,18 @@ const Diary = sequelize.import('../models/diary');
 export function upload(file) {
     return new Promise((resolve, reject) => {
         let diaryDate = getDateFrom(file.originalname);
-        console.log('diary date: ' + JSON.stringify(diaryDate));
-        
         if (diaryDate === null) {
             reject('format error from filename of diary');
             return;
         }
 
+        debugger
+        let diaryInfo = splitTitleAndContent(file.buffer.toString()); 
         Diary
             .build({
                 dateString: diaryDate.dateString,
-                raw: file.buffer.toString(),
+                title: diaryInfo.title,
+                content: diaryInfo.content,
                 year: diaryDate.year,
                 month: diaryDate.month,
                 day: diaryDate.day,
@@ -64,7 +65,7 @@ export function getDiaryBy(dateString) {
             return;
         }
 
-        let query = ['id', 'raw', 'dateString', 'createdAt', 'updatedAt'];
+        let query = ['id', 'title', 'content', 'dateString', 'createdAt', 'updatedAt'];
 
         return Diary.findOne({
             attributes: query,
@@ -76,6 +77,41 @@ export function getDiaryBy(dateString) {
                 resolve(ret);
             }, err => {
                 reject(err);     
+            })
+            .catch(err => {
+                reject(err);
+                throw err;
+            });
+    });
+}
+
+/**
+ * 按年月取当月下所有日记的dayOfMonth
+ *
+ * @param {string|number} year 年
+ * @param {string|number} month 月
+ * @return {Array}
+ */
+export function getDaysByMonth(year, month) {
+    return new Promise((resolve, reject) => {
+        let typeOfMonth = typeof month;
+        let typeOfYear = typeof year;
+        if ((typeOfMonth !== 'string' && typeOfMonth !== 'number')
+            || (typeOfYear !== 'string' && typeOfYear !== 'number')) {
+            return null;
+        }
+
+        Diary.findAll({
+            attributes: ['dateString'],
+            where: {
+                year: +year,
+                month: +month
+            }
+        })
+            .then(ret => {
+                resolve(ret);
+            }, err => {
+                reject(err);
             })
             .catch(err => {
                 reject(err);
@@ -108,4 +144,26 @@ function getDateFrom(filename) {
     }
 
     return ret;
+}
+
+/**
+ * 解析日记文件内容，分离标题和剩余内容
+ *
+ * @param {string} file 日记内容
+ *
+ * @return {Object} title和content
+ */
+function splitTitleAndContent(file) {
+    const re = /^#\s?([^\n]+)(?:\n*([\w\W]*))?/;
+    let matches = file.match(re);
+
+    if (!matches) {
+        return null;
+    }
+    else {
+        return {
+            title: matches[1],
+            content: matches[2] || ''
+        };
+    }
 }
