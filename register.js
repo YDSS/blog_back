@@ -3,7 +3,7 @@
  *  真实app入口为main.js
  */
 require('babel-core/register');
-// ace的node版本太低，没有原生Promise，只好用bluebird代替
-global.Promise = require('bluebird');
+// ace的node版本太低，没有原生Promise，用es6-promise作为polyfill
+require('es6-promise').polyfill();
 
 require('./main');

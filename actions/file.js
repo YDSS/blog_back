@@ -28,7 +28,6 @@ export function upload(file) {
             return;
         }
 
-        debugger
         let diaryInfo = splitTitleAndContent(file.buffer.toString()); 
         Diary
             .build({
@@ -46,7 +45,6 @@ export function upload(file) {
             })
             .catch(err => {
                 reject(err);
-                throw err;
             });
     });
 }
@@ -75,12 +73,9 @@ export function getDiaryBy(dateString) {
         })
             .then(ret => {
                 resolve(ret);
-            }, err => {
-                reject(err);     
             })
             .catch(err => {
                 reject(err);
-                throw err;
             });
     });
 }
@@ -110,14 +105,47 @@ export function getDaysByMonth(year, month) {
         })
             .then(ret => {
                 resolve(ret);
-            }, err => {
-                reject(err);
             })
             .catch(err => {
                 reject(err);
-                throw err;
             });
     });
+}
+
+/**
+ * 查找最近写的一篇日记
+ *
+ * @param {string|number} year 年
+ * @param {string|number} month 月
+ */
+export function getLatestDiary(year, month) {
+    return new Promise((resolve, reject) => {
+        let query = ['id', 'title', 'content', 'dateString', 'createdAt', 'updatedAt'];
+
+        return Diary.findOne({
+            attributes: query,
+            where: {
+                year: {
+                    $lte: year
+                },
+                month: {
+                    $lte: month
+                }
+            },
+            order: [
+                ['year', 'DESC'],
+                ['month', 'DESC'],
+                ['day', 'DESC']
+            ]
+        })
+            .then(ret => {
+                resolve(ret);
+            })
+            .catch(err => {
+                reject(err);
+            });
+    });
+
 }
 
 /**

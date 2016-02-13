@@ -82,7 +82,30 @@ router.get('/findByMonth', (req, res) => {
                 errno: StatusCode.GET_DAYS_BY_MONTH_FAIL,
                 err: err.message || err
             });
-            throw err;
+        });
+});
+
+router.get('/findLatestDiary', (req, res) => {
+    let {year, month} = req.query;
+
+    uploadAction.getLatestDiary(year, month)
+        .then(ret => {
+            res.type('json');
+            res.send({
+                errno: 0,
+                data: ret
+            });
+        }, err => {
+            res.send({
+                errno: StatusCode.GET_LATEST_DIARY_FAIL,
+                err: err.message
+            });
+        })
+        .catch(err => {
+            res.send({
+                errno: StatusCode.GET_LATEST_DIARY_FAIL,
+                err: err.message || err
+            });
         });
 });
 
