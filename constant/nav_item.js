@@ -1,4 +1,4 @@
-import {cloneDeep} from 'lodash/Lang'; 
+import {cloneDeep} from 'lodash/lang'; 
 
 const NAV_TYPE = {
     // 指向内部router的链接, 如/edit

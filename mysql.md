@@ -5,7 +5,7 @@
 - table `article`
     
 ```sql
-    create table `article` (id int(4) not null primary key auto_increment, title varchar(30) not null unique, raw text not null, tags varchar(30), createdAt datetime, updatedAt datetime, summary varchar(50));`
+    create table `article` (id int(4) not null primary key auto_increment, title varchar(30) not null unique, raw text not null, tags varchar(30), createdAt datetime, updatedAt datetime, summary text);`
 ```
 
 - table `diary`

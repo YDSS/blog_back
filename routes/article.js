@@ -21,11 +21,11 @@ router.get('/find', (req, res, next) => {
         });
 });
 
-router.get('/add', (req, res, next) => {
+router.post('/add', (req, res, next) => {
     const addArticle = articleAction.addArticle;
-    let content = req.query.content;
+    let raw = decodeURIComponent(req.body.raw);
 
-    addArticle(content)
+    addArticle(raw)
         .then(ret => {
             res.send({
                 errno: responseState.OK,

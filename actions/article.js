@@ -1,6 +1,6 @@
 import sequelize from '../db/connectMysql';
+import Util from '../util/util';
 
-const getTitleAndAbs = require('../util/util.js').getTitleAndAbs;
 let Article = sequelize.import('../models/article');
 
 exports.findArticle = function (data) {
@@ -106,7 +106,7 @@ function findArticleByTags(data) {
 
 exports.addArticle = function (raw) {
     return new Promise((resolve, reject) => {
-        let analyzed = getTitleAndAbs(raw);
+        let analyzed = Util.getTitleAndAbs(raw);
         // 如果没有标题或者标题格式不对，直接返回
         if (!analyzed) {
             reject('wrong format of title or summary...');
@@ -135,7 +135,7 @@ exports.addArticle = function (raw) {
 
 exports.updateArticle = function (data) {
     return new Promise((resolve, reject) => {
-        let analyzed = getTitleAndAbs(data.content);
+        let analyzed = Util.getTitleAndAbs(data.content);
         let title = analyzed.title;
         let abs = analyzed.abs;
 
