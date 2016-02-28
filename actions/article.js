@@ -11,6 +11,7 @@ exports.findArticle = function (data) {
         data.queryItem = [
             'id',
             'title',
+            'content',
             'summary',
             'tags',
             'raw',
@@ -73,7 +74,7 @@ function findArticleByPage(data) {
 function getArticlesByPage(data) {
     return Article.findAll({
         attributes: data.queryItem,
-        order: 'createdAt DESC',
+        order: 'updatedAt DESC',
         limit: data.pageSize,
         // 前端页码从1开始计数
         offset: (data.curPage - 1) * data.pageSize
@@ -106,20 +107,19 @@ function findArticleByTags(data) {
 
 exports.addArticle = function (raw) {
     return new Promise((resolve, reject) => {
-        let analyzed = Util.getTitleAndAbs(raw);
+        let parsed = Util.parseRaw(raw);
         // 如果没有标题或者标题格式不对，直接返回
-        if (!analyzed) {
+        if (!parsed) {
             reject('wrong format of title or summary...');
             return;
         }
-
-        let title = analyzed.title;
-        let abs = analyzed.abs;
+        let {title, content, summary} = parsed;
 
         Article
             .build({
                 title: title,
-                summary: abs,
+                summary: summary,
+                content: content,
                 raw: raw,
                 createdAt: new Date()
             })
@@ -133,24 +133,40 @@ exports.addArticle = function (raw) {
     });
 }
 
+/**
+ * 更新文章
+ *
+ * @param {object} data
+ * @property {number} data.id 文章ID
+ * @property {string} data.raw 文章内容
+ * @property {Date} data.updatedAt 更新时间
+ *
+ * @exports
+ */
 exports.updateArticle = function (data) {
     return new Promise((resolve, reject) => {
-        let analyzed = Util.getTitleAndAbs(data.content);
-        let title = analyzed.title;
-        let abs = analyzed.abs;
+        let {id, raw, updatedAt} = data;
+        let parsed = Util.parseRaw(raw);
+        // 如果没有标题或者标题格式不对，直接返回
+        if (!parsed) {
+            reject('wrong format of title or summary...');
+            return;
+        }
 
+        let {title, content, summary} = parsed;
         Article
             .findOne({
                 where: {
-                    id: data.id
+                    id
                 }
             })
             .then(article => {
                 let ret = article.update({
-                    title: title,
-                    raw: data.raw,
-                    summary: abs,
-                    updatedAt: new Date()
+                    title,
+                    raw,
+                    summary,
+                    content,
+                    updatedAt
                 });
                 resolve(ret);
             })

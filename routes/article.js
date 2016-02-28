@@ -40,14 +40,15 @@ router.post('/add', (req, res, next) => {
         });
 });
 
-router.get('/update', (req, res, next) => {
+router.post('/update', (req, res, next) => {
     const updateArticle = articleAction.updateArticle;
-    let id = req.query.id;
-    let content = req.query.content;
+    let {id, raw, updatedAt} = req.body;
+    raw = decodeURIComponent(raw);
 
     updateArticle({
-        id: id,
-        content: content
+        id,
+        raw,
+        updatedAt
     })
         .then(ret => {
             res.send({
