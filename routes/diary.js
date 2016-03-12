@@ -5,17 +5,20 @@
  */
 import express from 'express';
 import multer from 'multer';
-import * as uploadAction from '../actions/file';
+import * as diaryAction from '../actions/diary';
 import StatusCode from '../constant/state_code';
 
 let router = express.Router();
 let upload = multer();
 
+/**
+ * 日记上传
+ */
 router.post('/upload', upload.single('uploadFile'), (req, res) => {
     // multer返回单个文件放在req.file里
     let file = req.file;
 
-    uploadAction.upload(file)
+    diaryAction.upload(file)
         .then(ret => {
             res.send({
                 errno: 0,
@@ -35,11 +38,14 @@ router.post('/upload', upload.single('uploadFile'), (req, res) => {
         });
 });
 
+/**
+ * 通过dateString查找单个日记
+ */
 router.get('/find', (req, res) => {
     // diary在数据库里的唯一标识，格式为2015-11-22
     let dateString = req.query.dateString;
 
-    uploadAction.getDiaryBy(dateString)
+    diaryAction.getDiaryBy(dateString)
         .then(diary => {
             res.type('json');
             res.send({
@@ -61,10 +67,13 @@ router.get('/find', (req, res) => {
         });
 });
 
+/**
+ * 通过年、月获取日记列表
+ */
 router.get('/findByMonth', (req, res) => {
     let {year, month} = req.query;
 
-    uploadAction.getDaysByMonth(year, month)
+    diaryAction.getDaysByMonth(year, month)
         .then(ret => {
             res.type('json');
             res.send({
@@ -85,10 +94,13 @@ router.get('/findByMonth', (req, res) => {
         });
 });
 
+/**
+ * 通过年、月获取最近的一篇日记
+ */
 router.get('/findLatestDiary', (req, res) => {
     let {year, month} = req.query;
 
-    uploadAction.getLatestDiary(year, month)
+    diaryAction.getLatestDiary(year, month)
         .then(ret => {
             res.type('json');
             res.send({
@@ -109,4 +121,31 @@ router.get('/findLatestDiary', (req, res) => {
         });
 });
 
-export {router as file};
+/**
+ * 通过dateString更新日记
+ */
+router.post('/update', (req, res) => {
+    let {dateString, content, date} = req.body;
+
+    diaryAction.updateByDateString(dateString, content, date)
+        .then(ret => {
+            res.type('json');
+            res.send({
+                errno: 0,
+                data: ret
+            });
+        }, err => {
+            res.send({
+                errno: StatusCode.UPDATE_DIARY_FAIL,
+                err: err.message || err
+            });
+        })
+        .catch(err => {
+            res.send({
+                errno: StatusCode.UPDATE_DIARY_FAIL,
+                err: err.message || err
+            });
+        });
+});
+
+export {router as diary};

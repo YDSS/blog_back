@@ -149,6 +149,36 @@ export function getLatestDiary(year, month) {
 }
 
 /**
+ * 更新日记
+ *
+ * @param {string} dateString 日记的日期, 对应数据库的dateString字段
+ * @param {string} content 日记内容
+ * @param {Date} date 更新时间
+ */
+export function updateByDateString(dateString, content, date) {
+    return new Promise((resolve, reject) => {
+        let query = ['id', 'title', 'content', 'dateString', 'createdAt', 'updatedAt'];
+
+        Diary.findOne({
+            where: {
+                dateString
+            }
+        })
+            .then(diary => {
+                let updated = diary.update({
+                    content,
+                    updatedAt: date
+                });
+                resolve(updated);
+            })
+            .catch(err => {
+                reject(err);
+            });
+
+    });
+}
+
+/**
  * 通过文件名解析日记的年月日
  *  日记的文件名的格式为'YYYY-MM-DD.md'
  *

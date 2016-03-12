@@ -10,7 +10,7 @@ import session from 'express-session';
 import {index} from './routes/index';
 import {users} from './routes/users';
 import {article} from './routes/article';
-import {file} from './routes/file';
+import {diary} from './routes/diary';
 
 var app = express();
 
@@ -49,7 +49,7 @@ app.use(/^((?!\/api\/).)*$/, (req, res) => {
     res.redirect('/');
 });
 app.use('/api/article', article);
-app.use('/api/file', file);
+app.use('/api/diary', diary);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
