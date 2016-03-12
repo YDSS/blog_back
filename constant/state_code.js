@@ -8,3 +8,5 @@ exports.UPLOAD_FAIL = 2;
 exports.GET_DAYS_BY_MONTH_FAIL = 3;
 // 取最近写的日记失败
 exports.GET_LATEST_DIARY_FAIL = 4;
+// 更新日记失败
+exports.UPDATE_DIARY_FAIL = 5;
