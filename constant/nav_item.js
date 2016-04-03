@@ -15,13 +15,12 @@ const navItems = [
         icon: 'home',
         type: NAV_TYPE.INNER,
         url: '/home'
-    },
-    {
+    }, {
         name: 'EDIT',
         icon: 'pencil',
         type: NAV_TYPE.INNER,
         url: '/edit'
-    },{
+    }, {
         name: 'DIARY',
         icon: 'book',
         type: NAV_TYPE.NO_LEAF,
@@ -33,20 +32,17 @@ const navItems = [
             url: '/diary/upload'
         }],
         url: '/diary'
-    },
-    {
+    }, {
         name: 'TAGS',
         icon: 'tags',
         type: NAV_TYPE.INNER,
         url: '/tag'
-    },
-    {
+    }, {
         name: 'ABOUT',
         icon: 'question',
         type: NAV_TYPE.INNER,
         url: '/about'
-    },
-    {
+    }, {
         name: 'GITHUB',
         icon: 'github',
         type: NAV_TYPE.OUTER,

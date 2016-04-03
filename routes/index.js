@@ -10,7 +10,7 @@ router.get('/', (req, res, next) => {
     let navItems = getNavItems(auth);
 
     res.render('index', {
-        serverData: JSON.stringify({
+        __data: JSON.stringify({
             auth: auth,
             navItems: navItems
         })
