@@ -26,7 +26,7 @@ const navItems = [
         type: NAV_TYPE.NO_LEAF,
         children: [{
             name: 'view',
-            url: '/diary/view'
+            url: '/diary/read'
         }, {
             name: 'upload',
             url: '/diary/upload'
