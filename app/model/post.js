@@ -22,4 +22,4 @@ module.exports = (sequelize, Datatype) => {
         timestamps: false,
         tableName: 'post'
     });
-}
+};
