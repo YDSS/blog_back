@@ -17,7 +17,9 @@ const env = process.env['NODE_ENV'];
 
 app.use(serve('public'));
 // body parser
-app.use(koaBody());
+app.use(koaBody({
+    multipart: true
+}));
 
 if (env === 'development') {
     // 编译webpack

@@ -10,18 +10,19 @@
   "dependencies": {
     "co": "^4.6.0",
     "co-views": "^2.1.0",
-    "thunkify": "^2.1.2",
+    "is-type-of": "^1.0.0",
     "jade": "~1.9.2",
-    "lodash": "^4.3.0",
-    "mysql": "^2.9.0",
     "koa": "^1.2.1",
     "koa-body": "^1.4.0",
     "koa-router": "^5.4.0",
     "koa-serve": "^0.1.7",
+    "lodash": "^4.3.0",
+    "mysql": "^2.9.0",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
     "sequelize": "^3.14.1",
-    "serve-favicon": "~2.2.1"
+    "serve-favicon": "~2.2.1",
+    "thunkify": "^2.1.2"
   },
   "devDependencies": {
     "babel": "^6.3.26",

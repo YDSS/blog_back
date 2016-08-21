@@ -33,6 +33,20 @@ co(function* () {
         router.del('post', `${postApiPrefix}/:id`, api.post.delPost);
         // 更新post
         router.post('post', `${postApiPrefix}/:id`, api.post.updatePost);
+        /**
+         * diary api
+         */
+        const diaryApiPrefix = '/diary';
+        // 上传日记，新增或修改
+        router.post('diary', diaryApiPrefix, api.diary.upload);
+        // 通过dateString查找diary
+        router.get('diary', `${diaryApiPrefix}/:dateString`, api.diary.getDiaryByDate);
+        // 通过年月查找diaries
+        router.get('diary', `${diaryApiPrefix}/bymonth`, api.diary.getDiariesByMonth);
+        // 通过年月查找最新的一篇diary
+        router.get('diary', `${diaryApiPrefix}/latest`, api.diary.getLatestDiaryByMonth);
+        // 更新diary
+        router.post('diary', `${diaryApiPrefix}/:dateString`, api.diary.updateDiary);
     }
     catch (err) {
         console.log(err.stack);
